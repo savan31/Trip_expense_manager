@@ -6,17 +6,34 @@ public class PersonModel {
     public PersonModel() {
     }
 
-    int personId,amountDebit,amountCredit;
-    String name,timeStampTrip;
+    int personId,tripId,amountDebit,amountCredit;
+    String name,timeStampTrip,admin;
 
 
-
-    public PersonModel(int personId, int amountDebit, int amountCredit, String name, String timeStampTrip) {
+    public PersonModel(int personId, int tripId, int amountDebit, int amountCredit, String name, String timeStampTrip, String admin) {
         this.personId = personId;
+        this.tripId = tripId;
         this.amountDebit = amountDebit;
         this.amountCredit = amountCredit;
         this.name = name;
         this.timeStampTrip = timeStampTrip;
+        this.admin = admin;
+    }
+
+    public String getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(String admin) {
+        this.admin = admin;
+    }
+
+    public int getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(int tripId) {
+        this.tripId = tripId;
     }
 
     public int getPersonId() {

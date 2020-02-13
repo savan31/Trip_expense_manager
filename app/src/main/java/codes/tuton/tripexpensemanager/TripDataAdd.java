@@ -54,10 +54,14 @@ public class TripDataAdd extends AppCompatActivity {
     //TripData
     private String tripNameString, tripDescriptionString, tripDate;
 
+    //public static
+    public static int positionAdmin = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_data_add);
+        positionAdmin = -1;
 
         bindView();//Bind View
         onClickEventHandler();//Click event handler
@@ -118,10 +122,7 @@ public class TripDataAdd extends AppCompatActivity {
                 Log.i(TAG, "Save Trip Button Clicked");
 
                 if (isValidTripData()){
-                    TripModel tripModel =  new TripModel();
-                    tripModel.setTripName(tripNameString);
-                    tripModel.setDescription(tripDescriptionString);
-                    tripModel.setDate(dateTV.getText().toString().trim());
+                    saveData(); //Save Database
                 }
             }
         });
@@ -158,6 +159,7 @@ public class TripDataAdd extends AppCompatActivity {
                     personModel.setName(personName);
                     personModel.setAmountDebit(Integer.valueOf(depositeAmount));
                     personModel.setAmountCredit(0);
+
 
                    savePersonData(personModel);
 
@@ -214,6 +216,55 @@ public class TripDataAdd extends AppCompatActivity {
             nameTripET.requestFocus();
             return  false;
         }
+
+        if (tripDescriptionString.isEmpty()) {
+            tripDescriptionString = " ";
+        }
+
+        if (personModelList.size() < 2) {
+            Toast.makeText(this, "please enter atleast 2 person.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (positionAdmin == -1) {
+            Toast.makeText(this, "please Select Admin", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         return true;
+    }
+
+    //TODO: Database in Save Data
+
+    void saveData(){
+        Log.i(TAG,"Save Data in Database");
+        TripModel tripModel =  new TripModel(); //Trip model for save
+        tripModel.setTripName(tripNameString);
+        tripModel.setDescription(tripDescriptionString);
+        tripModel.setDate(dateTV.getText().toString().trim());
+
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
+        long id = dataBaseHelper.insertDataTrip(tripModel); //Trip Save In Database
+        if (id == -1) {
+            Toast.makeText(this, "Somethin Went Wrong", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        for (int i =0 ; i < personModelList.size(); i++) {
+            personModelList.get(i).setTripId((int) id);
+            if (i == positionAdmin) {
+                personModelList.get(i).setAdmin("admin");
+                Log.i(TAG, "Admin Position "+ i);
+            } else {
+                personModelList.get(i).setAdmin(" ");
+            }
+            long person_id = dataBaseHelper.insertDataPerson(personModelList.get(i));
+
+            Log.i(TAG, "Trip id "+id+" Person id "+ person_id);
+            if (person_id == -1) {
+                Toast.makeText(this, "Somethin Went Wrong", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+        onBackPressed();
     }
 }

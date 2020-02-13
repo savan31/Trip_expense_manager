@@ -6,6 +6,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import codes.tuton.tripexpensemanager.Model.PersonModel;
 import codes.tuton.tripexpensemanager.R;
+import codes.tuton.tripexpensemanager.TripDataAdd;
 
 public class AdaptorPersonDetails extends RecyclerView.Adapter<AdaptorPersonDetails.HomeViewHolder> {
 
@@ -31,6 +33,7 @@ public class AdaptorPersonDetails extends RecyclerView.Adapter<AdaptorPersonDeta
 
         TextView characterTV,personNameTV;
         ImageView menuIV;
+        LinearLayout recyclerClickAdmin;
 
 
 
@@ -40,6 +43,7 @@ public class AdaptorPersonDetails extends RecyclerView.Adapter<AdaptorPersonDeta
             characterTV = i.findViewById(R.id.characterTV);
             personNameTV = i.findViewById(R.id.personNameTV);
             menuIV = i.findViewById(R.id.menuIV);
+            recyclerClickAdmin = i.findViewById(R.id.recyclerClickAdmin);
         }
     }
 
@@ -52,12 +56,23 @@ public class AdaptorPersonDetails extends RecyclerView.Adapter<AdaptorPersonDeta
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HomeViewHolder holder, final int position) {
 
         PersonModel personModel =personModelList.get(position);
-
         holder.characterTV.setText(String.valueOf(personModel.getName().charAt(0)));
         holder.personNameTV.setText(personModel.getName());
+
+        if (position == TripDataAdd.positionAdmin) {
+            holder.personNameTV.setText(personModel.getName()+"(Admin)");
+        }
+
+        holder.recyclerClickAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TripDataAdd.positionAdmin = position;
+                notifyDataSetChanged();
+            }
+        });
 
 
 

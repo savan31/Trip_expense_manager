@@ -29,17 +29,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
     String TABLE_NAME_PERSON = "PERSON";
+    String COL_TRIP_ID = "TRIP_ID";
     String COL_PERSON_ID = "PRIMARY_ID";
     String COL_NAME = "NAME";
     String COL_AMOUNT_DEBIT = "AMOUNT_DEBIT";
     String COL_AMOUNT_CREADIT = "AMOUNT_CREADIT";
+    String COL_ADMIN = "ADMIN";
     String COLUMN_TIMESTAMP_PERSON = "TIMESTAMP_PERSON";
 
 
     String CREATE_TABLE_TRIP =
             "CREATE TABLE " + TABLE_NAME_TRIP + "("
                     + COL_PRIMARY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + COL_DESCRIPTION + " TEXT,"
+                    + COL_TRIP_NAME + " TEXT,"
                     + COL_DESCRIPTION + " TEXT,"
                     + COL_DATE + " STRING,"
                     + COLUMN_TIMESTAMP_TRIP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
@@ -51,6 +53,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                     + COL_NAME + " TEXT,"
                     + COL_AMOUNT_DEBIT + " INTEGER,"
                     + COL_AMOUNT_CREADIT + " INTEGER,"
+                    + COL_TRIP_ID + " INTEGER,"
+                    + COL_ADMIN + " TEXT,"
                     + COLUMN_TIMESTAMP_PERSON + " DATETIME DEFAULT CURRENT_TIMESTAMP"
                     + ")";
 
@@ -76,22 +80,27 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public long insertDataTrip(String tripname,String description, String date) {
+
+
+    public long insertDataTrip(TripModel tripModel) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_TRIP_NAME,tripname);
-        contentValues.put(COL_DESCRIPTION,description);
-        contentValues.put(COL_DATE, date);
+        contentValues.put(COL_TRIP_NAME,tripModel.getTripName());
+        contentValues.put(COL_DESCRIPTION,tripModel.getDescription());
+        contentValues.put(COL_DATE, tripModel.getDate());
         long id = db.insert(TABLE_NAME_TRIP, null, contentValues);
         db.close();
         return id;
     }
-    public long insertDataPerson(String name, int amountDebit,int amountCredit) {
+    public long insertDataPerson(PersonModel personModel) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_NAME,name);
-        contentValues.put(COL_AMOUNT_DEBIT,amountDebit);
-        contentValues.put(COL_AMOUNT_CREADIT, amountCredit);
+        contentValues.put(COL_NAME,personModel.getName());
+        contentValues.put(COL_AMOUNT_DEBIT,personModel.getAmountDebit());
+        contentValues.put(COL_AMOUNT_CREADIT, personModel.getAmountCredit());
+        contentValues.put(COL_ADMIN, personModel.getAdmin());
+        contentValues.put(COL_TRIP_ID, personModel.getTripId());
+
         long id = db.insert(TABLE_NAME_PERSON, null, contentValues);
         db.close();
         return id;
