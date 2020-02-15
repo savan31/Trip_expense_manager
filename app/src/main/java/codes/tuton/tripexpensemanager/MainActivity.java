@@ -38,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerViewTrip;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
-    List<TripModel> tripModelList = new ArrayList<>();
+
+    //Public Static
+    public static List<TripModel> tripModelList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

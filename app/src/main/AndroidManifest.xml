@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActivityTripDetails"></activity>
+        <activity android:name=".ActivityTripDetails"
+            android:label="Your Trip Details"
+            android:parentActivityName=".MainActivity"
+            ></activity>
         <activity
             android:name=".TripDataAdd"
             android:label="Create New Trip"

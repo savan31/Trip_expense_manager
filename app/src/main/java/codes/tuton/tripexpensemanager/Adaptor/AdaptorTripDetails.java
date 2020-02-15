@@ -58,7 +58,7 @@ public class AdaptorTripDetails extends RecyclerView.Adapter<AdaptorTripDetails.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MainViewHolder holder, final int position) {
         TripModel tripModel = tripModelList.get(position);
         final int idTrip = tripModel.getPrimaryId();
         if ((idTrip+1)%5 == 0) {
@@ -80,6 +80,7 @@ public class AdaptorTripDetails extends RecyclerView.Adapter<AdaptorTripDetails.
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ActivityTripDetails.class);
+                intent.putExtra("TRIP_POSITION",position);
                 context.startActivity(intent);
             }
         });
