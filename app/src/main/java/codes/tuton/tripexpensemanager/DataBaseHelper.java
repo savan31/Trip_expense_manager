@@ -186,7 +186,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 tripModel.setTripName(cursor.getString(cursor.getColumnIndex(COL_TRIP_NAME)));
                 tripModel.setDescription(cursor.getString(cursor.getColumnIndex(COL_DESCRIPTION)));
                 tripModel.setDate(cursor.getString(cursor.getColumnIndex(COL_DATE)));
-                tripModel.setTimeStampTrip(cursor.getString(cursor.getColumnIndex(COLUMN_TIMESTAMP_TRIP)));
+//                tripModel.setTimeStampTrip(cursor.getString(cursor.getColumnIndex(COLUMN_TIMESTAMP_TRIP)));
 
                 tripModelList.add(tripModel);
             } while (cursor.moveToNext());
@@ -199,24 +199,27 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return tripModelList;
     }
 
-    public List<PersonModel> getAllGoalPerson() {
+    public List<PersonModel> getAllGoalPerson(int tripId) {
         List<PersonModel> personModelList = new ArrayList<>();
 
         // Select All Query
 
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT  * FROM " + TABLE_NAME_PERSON + " ORDER BY " + COLUMN_TIMESTAMP_PERSON + " DESC", null);
+        Cursor cursor = db.rawQuery("SELECT  * FROM " + TABLE_NAME_PERSON + " WHERE "+ COL_TRIP_ID +" = "+tripId+" ORDER BY " + COLUMN_TIMESTAMP_PERSON + " DESC", null);
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 PersonModel personModel = new PersonModel();
-                personModel.setPersonId(cursor.getInt(cursor.getColumnIndex(COLUMN_TIMESTAMP_PERSON)));
+                personModel.setTripId(cursor.getInt(cursor.getColumnIndex(COL_TRIP_ID)));
+                personModel.setPersonId(cursor.getInt(cursor.getColumnIndex(COL_PERSON_ID)));
                 personModel.setName(cursor.getString(cursor.getColumnIndex(COL_NAME)));
                 personModel.setAmountDebit(cursor.getInt(cursor.getColumnIndex(COL_AMOUNT_DEBIT)));
                 personModel.setAmountCredit(cursor.getInt(cursor.getColumnIndex(COL_AMOUNT_CREADIT)));
-              //  personModel.setTimeStampTrip(cursor.getString(cursor.getColumnIndex(COLUMN_TIMESTAMP_TRIP)));
+                personModel.setAdmin(cursor.getString(cursor.getColumnIndex(COL_ADMIN)));
+//                personModel.setTimeStampTrip(cursor.getString(cursor.getColumnIndex(COLUMN_TIMESTAMP_TRIP)));
+
 
                 personModelList.add(personModel);
             } while (cursor.moveToNext());

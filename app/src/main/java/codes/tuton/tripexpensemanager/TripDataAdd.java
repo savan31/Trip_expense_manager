@@ -157,8 +157,8 @@ public class TripDataAdd extends AppCompatActivity {
 
                     PersonModel personModel = new PersonModel(); //New Person Model redy
                     personModel.setName(personName);
-                    personModel.setAmountDebit(Integer.valueOf(depositeAmount));
-                    personModel.setAmountCredit(0);
+                    personModel.setAmountCredit(Integer.valueOf(depositeAmount));
+                    personModel.setAmountDebit(0);
 
 
                    savePersonData(personModel);

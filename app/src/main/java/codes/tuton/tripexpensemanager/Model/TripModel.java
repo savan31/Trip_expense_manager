@@ -1,10 +1,16 @@
 package codes.tuton.tripexpensemanager.Model;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 public class TripModel {
     public TripModel() {
     }
     int primaryId;
     String tripName,description,date,timeStampTrip;
+    List<PersonModel> personModelList;
+    int debitMoney = 0;
 
     public TripModel(int primaryId, String tripName, String description, String date, String timeStampTrip) {
         this.primaryId = primaryId;
@@ -12,6 +18,22 @@ public class TripModel {
         this.description = description;
         this.date = date;
         this.timeStampTrip = timeStampTrip;
+    }
+
+    public int getDebitMoney() {
+        return debitMoney;
+    }
+
+    public void setDebitMoney(int debitMoney) {
+        this.debitMoney = debitMoney;
+    }
+
+    public List<PersonModel> getPersonModelList() {
+        return personModelList;
+    }
+
+    public void setPersonModelList(List<PersonModel> personModelList) {
+        this.personModelList = personModelList;
     }
 
     public String getTripName() {
