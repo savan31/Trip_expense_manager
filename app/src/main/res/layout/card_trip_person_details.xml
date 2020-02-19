@@ -56,7 +56,16 @@
                 android:id="@+id/creditRs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="(2000)"
+                android:text="0"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="@color/colorBlack"
+                android:layout_marginLeft="@dimen/_10sdp"/>
+            <TextView
+                android:id="@+id/fundRs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:textSize="@dimen/_10sdp"
@@ -67,6 +76,7 @@
 
     <ImageView
         android:id="@+id/useMoney"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/_5sdp"

@@ -1,12 +1,17 @@
 package codes.tuton.tripexpensemanager;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +30,7 @@ import java.util.Locale;
 
 import codes.tuton.tripexpensemanager.Adaptor.AdaptorPersonDetails;
 import codes.tuton.tripexpensemanager.Adaptor.AdaptorTripDetails;
+import codes.tuton.tripexpensemanager.Model.CategoryModel;
 import codes.tuton.tripexpensemanager.Model.PersonModel;
 import codes.tuton.tripexpensemanager.Model.TripModel;
 
@@ -33,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getName();
     //Bind View
     FloatingActionButton floatingActionButton;
+
+    Boolean isUpdateCallForMainActivity = false;
 
     //Recycler View
     RecyclerView recyclerViewTrip;
@@ -47,9 +55,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SharedPreferences sharedpreferences = getSharedPreferences("CategotyData", Context.MODE_PRIVATE);
+
+        if (!sharedpreferences.getBoolean("isFirstTimeLogin", false)){
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putBoolean("isFirstTimeLogin", true);
+            editor.apply();
+
+            DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
+
+            dataBaseHelper.insertDataCategory("Entertainment");
+            dataBaseHelper.insertDataCategory("Food");
+            dataBaseHelper.insertDataCategory("Hotel");
+            dataBaseHelper.insertDataCategory("Medical");
+            dataBaseHelper.insertDataCategory("Miscellaneous");
+            dataBaseHelper.insertDataCategory("Parking");
+            dataBaseHelper.insertDataCategory("Shopping");
+            dataBaseHelper.insertDataCategory("Toll");
+            dataBaseHelper.insertDataCategory("Travel");
+        }
+
         bindView();//Bind View
         onClickEventHandler();//Click event handler
         setRecyclerViewPerson(); //Recycler View Set
+
+
 
 
 
@@ -85,6 +115,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostResume() {
         super.onPostResume();
+       getDataUpdate();
+       LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
+           @Override
+           public void onReceive(Context context, Intent intent) {
+               getDataUpdate();
+               isUpdateCallForMainActivity = true;
+           }
+       },new IntentFilter("RELOAD_DATA"));
+    }
+
+//    LocalBrodcastManager localBrodcastManager;
+
+
+
+    void getDataUpdate(){
         if (tripModelList.size() > 0) {
             tripModelList.clear();
         }
@@ -106,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             tripModelList.get(i).setDebitMoney(totalGetMoney - totalUsedmoney);
+            tripModelList.get(i).setTotleAmount(totalGetMoney);
             adapter.notifyItemChanged(i);
         }
         Log.i(TAG,"Data Add In tripModelList");

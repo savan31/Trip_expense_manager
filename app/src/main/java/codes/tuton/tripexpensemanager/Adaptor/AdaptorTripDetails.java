@@ -75,7 +75,7 @@ public class AdaptorTripDetails extends RecyclerView.Adapter<AdaptorTripDetails.
 
         holder.tripNameTV.setText(tripModel.getTripName());
         holder.dateTV.setText(tripModel.getDate());
-        holder.rsTV.setText(String.valueOf(tripModel.getDebitMoney()));
+        holder.rsTV.setText(String.valueOf(tripModel.getDebitMoney())+"₹ Balance");
         holder.tripLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

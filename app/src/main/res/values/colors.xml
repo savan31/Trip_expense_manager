@@ -10,6 +10,7 @@
 
 
     <color name="colorBlack">#000000</color>
+    <color name="colorGray">#494747</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorBlackGround">#EBE6E6</color>
 </resources>

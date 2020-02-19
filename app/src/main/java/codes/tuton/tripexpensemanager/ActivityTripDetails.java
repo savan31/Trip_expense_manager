@@ -1,29 +1,45 @@
 package codes.tuton.tripexpensemanager;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import codes.tuton.tripexpensemanager.Adaptor.AdaptorHistory;
 import codes.tuton.tripexpensemanager.Adaptor.AdaptorViewPerson;
 import codes.tuton.tripexpensemanager.Model.PersonModel;
+import codes.tuton.tripexpensemanager.Model.TrasactionModel;
 import codes.tuton.tripexpensemanager.Model.TripModel;
 
 public class ActivityTripDetails extends AppCompatActivity {
 
     private final String TAG = this.getClass().getName();
 
-    RecyclerView recyclerViewPersonDetails;
-    RecyclerView.Adapter adapter;
-    RecyclerView.LayoutManager layoutManager;
+    public static int position;
+
+    RecyclerView recyclerViewPersonDetails,recyclerViewHistory;
+    public  static RecyclerView.Adapter adapter,adapterHistory;
+    RecyclerView.LayoutManager layoutManager,layoutManagerHistory;
+
+
     private ImageView tripImageIV;
     int[] ids = new int[]{R.drawable.trip,R.drawable.trip1,R.drawable.trip2,R.drawable.trip3,R.drawable.trip4 };
+
+    TripModel currentTripModel;
+
+    ArrayList<PersonModel> arrayListPersonModel = new ArrayList<>();
+
+    List<TrasactionModel> trasactionModelList = new ArrayList<>();
 
 
 
@@ -34,7 +50,15 @@ public class ActivityTripDetails extends AppCompatActivity {
         tripImageIV = findViewById(R.id.tripImageIV);
 
         int tripPosition = getIntent().getIntExtra("TRIP_POSITION", -1);
-        TripModel currentTripModel = MainActivity.tripModelList.get(tripPosition);
+        position = tripPosition;
+        currentTripModel = MainActivity.tripModelList.get(tripPosition);
+
+        setTitle(currentTripModel.getTripName());
+
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
+        trasactionModelList.addAll(dataBaseHelper.getAllTrasaction());
+
+        //Set Image
         int idTrip = currentTripModel.getPrimaryId();
         if ((idTrip+1)%5 == 0) {
             tripImageIV.setImageResource(ids[4]);
@@ -49,11 +73,47 @@ public class ActivityTripDetails extends AppCompatActivity {
         }
 
         recyclerViewPersonDetails = findViewById(R.id.recyclerViewPersonDetails);
-        adapter = new AdaptorViewPerson(currentTripModel.getPersonModelList(),this);
+        recyclerViewHistory = findViewById(R.id.recyclerViewHistory);
+
+
+        adapter = new AdaptorViewPerson(arrayListPersonModel,currentTripModel.getTotleAmount(),this);
         layoutManager = new LinearLayoutManager(this);
+
+        adapterHistory = new AdaptorHistory(trasactionModelList,this);
+        layoutManagerHistory = new LinearLayoutManager(this);
+
         recyclerViewPersonDetails.setAdapter(adapter);
         recyclerViewPersonDetails.setLayoutManager(layoutManager);
 
+        recyclerViewHistory.setAdapter(adapterHistory);
+        recyclerViewHistory.setLayoutManager(layoutManagerHistory);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewHistory.getContext(), LinearLayoutManager.VERTICAL);
+        recyclerViewHistory.addItemDecoration(dividerItemDecoration);
+
+        getData();
     }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        localBroadcastManager.sendBroadcast(new Intent("RELOAD_DATA"));
+        getData();
+        adapter.notifyDataSetChanged();
+        adapterHistory.notifyDataSetChanged();
+    }
+
+    void getData(){
+        arrayListPersonModel.clear();
+        trasactionModelList.clear();
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
+        arrayListPersonModel.addAll(dataBaseHelper.getAllGoalPerson(currentTripModel.getPrimaryId()));
+        trasactionModelList.addAll(dataBaseHelper.getAllTrasaction());
+        adapter.notifyDataSetChanged();
+        adapterHistory.notifyDataSetChanged();
+    }
+
+
 
 }

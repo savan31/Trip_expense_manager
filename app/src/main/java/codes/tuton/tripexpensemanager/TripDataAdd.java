@@ -265,6 +265,7 @@ public class TripDataAdd extends AppCompatActivity {
                 return;
             }
         }
+
         onBackPressed();
     }
 }

@@ -9,6 +9,7 @@ public class PersonModel {
     int personId,tripId,amountDebit,amountCredit;
     String name,timeStampTrip,admin;
 
+    Boolean isSelectedPersonForPurchese = false;
 
     public PersonModel(int personId, int tripId, int amountDebit, int amountCredit, String name, String timeStampTrip, String admin) {
         this.personId = personId;
@@ -18,6 +19,14 @@ public class PersonModel {
         this.name = name;
         this.timeStampTrip = timeStampTrip;
         this.admin = admin;
+    }
+
+    public Boolean getSelectedPersonForPurchese() {
+        return isSelectedPersonForPurchese;
+    }
+
+    public void setSelectedPersonForPurchese(Boolean selectedPersonForPurchese) {
+        isSelectedPersonForPurchese = selectedPersonForPurchese;
     }
 
     public String getAdmin() {

@@ -81,7 +81,6 @@ public class AdaptorPersonDetails extends RecyclerView.Adapter<AdaptorPersonDeta
         });
 
 
-
         holder.menuIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,18 +118,17 @@ public class AdaptorPersonDetails extends RecyclerView.Adapter<AdaptorPersonDeta
                                         if (personName.isEmpty()) {
                                             nameET.setError("Enter person name");
                                             nameET.requestFocus();
-                                        }else {
+                                        } else {
                                             if (depositeAmount.isEmpty()) { //Deposite is 0
 
                                                 depositeAmount = "0";
                                             }
 
 
-
                                             personModelList.get(position).setName(personName);
                                             personModelList.get(position).setAmountCredit(Integer.valueOf(depositeAmount));
 
-                                           notifyItemChanged(position);
+                                            notifyItemChanged(position);
 
                                             addPersonDialog.dismiss();
                                         }
@@ -149,7 +147,7 @@ public class AdaptorPersonDetails extends RecyclerView.Adapter<AdaptorPersonDeta
                                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
                                 //Uncomment the below code to Set the message and title from the strings.xml file
-                                builder.setMessage("Do you want to delete this person ?").setTitle("Are You Saure ??");
+                                builder.setMessage("Do you want to delete this person ?").setTitle("Do you want to delete this person ?");
 
                                 //Setting message manually and performing action on button click
                                 builder.setMessage("Do you want to close this application ?")
@@ -171,7 +169,7 @@ public class AdaptorPersonDetails extends RecyclerView.Adapter<AdaptorPersonDeta
                                 //Creating dialog box
                                 AlertDialog alert = builder.create();
                                 //Setting the title manually
-                                alert.setTitle("AlertDialogExample");
+                                alert.setTitle("Are You Saure ??");
                                 alert.show();
 
 

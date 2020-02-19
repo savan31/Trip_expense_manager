@@ -11,6 +11,7 @@ public class TripModel {
     String tripName,description,date,timeStampTrip;
     List<PersonModel> personModelList;
     int debitMoney = 0;
+    int totleAmount = 0 ;
 
     public TripModel(int primaryId, String tripName, String description, String date, String timeStampTrip) {
         this.primaryId = primaryId;
@@ -18,6 +19,14 @@ public class TripModel {
         this.description = description;
         this.date = date;
         this.timeStampTrip = timeStampTrip;
+    }
+
+    public int getTotleAmount() {
+        return totleAmount;
+    }
+
+    public void setTotleAmount(int totleAmount) {
+        this.totleAmount = totleAmount;
     }
 
     public int getDebitMoney() {
