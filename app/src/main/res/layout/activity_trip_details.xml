@@ -13,6 +13,7 @@
         android:scaleType="centerCrop"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/_180sdp"
+        android:background=""
         android:src="@drawable/trip2"/>
 
     <ScrollView
